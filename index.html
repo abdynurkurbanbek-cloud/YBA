@@ -3,925 +3,528 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YBA — Youth Business Association OS & Venture Fund</title>
+  <title>YBA OS — Ecosystem Platform</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #07090e;
-    }
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.4);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .glass-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(16, 185, 129, 0.3);
-      box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.15);
-    }
-    .glow-emerald {
-      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
-    }
-    .gradient-text {
-      background: linear-gradient(135deg, #34d399 0%, #14b8a6 50%, #06b6d4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .scrollbar-custom::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
-    }
-    .scrollbar-custom::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.5);
-    }
-    .scrollbar-custom::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 9999px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="text-slate-100 min-h-screen p-3 md:p-8 relative overflow-x-hidden scrollbar-custom">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
 
-  <!-- Background Orbs -->
-  <div class="fixed -top-40 -left-40 w-96 h-96 bg-emerald-600/10 rounded-full blur-[128px] pointer-events-none"></div>
-  <div class="fixed top-1/2 -right-40 w-96 h-96 bg-cyan-600/10 rounded-full blur-[128px] pointer-events-none"></div>
-
-  <div class="max-w-7xl mx-auto space-y-6 relative z-10">
-    
-    <!-- HEADER -->
-    <header class="glass-panel p-6 rounded-3xl flex flex-col lg:flex-row justify-between items-center gap-6 shadow-2xl relative overflow-hidden">
-      <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
-      
-      <div class="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-start">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center font-black text-slate-950 text-2xl shadow-lg shadow-emerald-500/20 glow-emerald">
-            YBA
-          </div>
-          <div>
-            <h1 class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
-              YBA <span class="text-[10px] font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider">OS & Venture Fund v2.0</span>
-            </h1>
-            <p class="text-slate-400 text-xs mt-0.5">Экосистема для молодых предпринимателей и венчурных инвесторов</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Stats Bar -->
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 w-full lg:w-auto">
-        <!-- Capital -->
-        <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block mb-0.5">
-            <i class="fa-solid fa-wallet text-emerald-400 mr-1"></i> Капитал
-          </span>
-          <span id="investor-balance" class="text-lg font-black text-emerald-400 tracking-tight">$100,000</span>
-        </div>
-
-        <!-- Monthly Royalty -->
-        <div class="bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80">
-          <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider block mb-0.5">
-            <i class="fa-solid fa-chart-line text-sky-400 mr-1"></i> Доход / мес
-          </span>
-          <span id="monthly-royalty" class="text-lg font-black text-sky-400 tracking-tight">+$1,850</span>
-        </div>
-
-        <!-- Level Bar -->
-        <div class="col-span-2 md:col-span-1 bg-slate-950/60 p-3.5 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
-          <div class="flex justify-between text-[10px] font-bold mb-1">
-            <span class="text-emerald-400" id="user-level"><i class="fa-solid fa-trophy mr-1"></i> LVL 1</span>
-            <span class="text-slate-400" id="user-xp">100 / 300 XP</span>
-          </div>
-          <div class="w-full bg-slate-900 rounded-full h-2 border border-slate-800 overflow-hidden">
-            <div id="xp-bar" class="bg-gradient-to-r from-emerald-500 to-cyan-400 h-full w-1/3 transition-all duration-500"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Currency Switcher -->
-      <div class="flex flex-wrap items-center gap-1.5 bg-slate-950/80 p-2 rounded-2xl border border-slate-800/80 w-full lg:w-auto justify-center">
-        <button onclick="setCurrency('USD')" id="btn-USD" class="px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-500 text-slate-950 shadow-md">USD $</button>
-        <button onclick="setCurrency('KZT')" id="btn-KZT" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white">KZT ₸</button>
-        <button onclick="setCurrency('CNY')" id="btn-CNY" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white">CNY ¥</button>
-        <button onclick="setCurrency('EUR')" id="btn-EUR" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white">EUR €</button>
-        <button onclick="setCurrency('RUB')" id="btn-RUB" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white">RUB ₽</button>
-        <button onclick="setCurrency('AED')" id="btn-AED" class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white">AED د.إ</button>
-      </div>
-    </header>
-
-    <!-- NAVIGATION TABS -->
-    <nav class="flex overflow-x-auto border-b border-slate-800/80 gap-2 pb-2 scrollbar-custom">
-      <button onclick="switchTab('investor')" id="tab-btn-investor" class="px-4 py-3 rounded-2xl border-b-2 border-emerald-400 text-emerald-400 font-bold text-xs md:text-sm whitespace-nowrap bg-emerald-500/10 transition">
-        <i class="fa-solid fa-briefcase mr-1.5"></i> Портфель
-      </button>
-      <button onclick="switchTab('dealflow')" id="tab-btn-dealflow" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-rocket mr-1.5"></i> Deal Flow
-      </button>
-      <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-chart-pie mr-1.5"></i> Юнит-экономика
-      </button>
-      <button onclick="switchTab('presentation')" id="tab-btn-presentation" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-display mr-1.5"></i> Slide Studio & Pitch
-      </button>
-      <button onclick="switchTab('viral')" id="tab-btn-viral" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-bolt mr-1.5"></i> Viral Hooks
-      </button>
-      <button onclick="switchTab('mentor')" id="tab-btn-mentor" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-robot mr-1.5"></i> AI Ментор
-      </button>
-      <button onclick="switchTab('grants')" id="tab-btn-grants" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-award mr-1.5"></i> Гранты
-      </button>
-      <button onclick="switchTab('network')" id="tab-btn-network" class="px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition">
-        <i class="fa-solid fa-users mr-1.5"></i> Matcher
-      </button>
-    </nav>
-
-    <!-- ================= TAB 0: VENTURE INVESTOR CABINET ================= -->
-    <div id="tab-investor" class="space-y-6">
-      <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Активных проектов</p>
-          <p id="inv-count" class="text-3xl font-black mt-1 text-emerald-400">3</p>
-          <p class="text-[10px] text-slate-500 mt-1">Проинвестированные бизнесы</p>
-        </div>
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Инвестировано всего</p>
-          <p id="inv-total-invested" class="text-3xl font-black mt-1 text-sky-400">$35,000</p>
-          <p class="text-[10px] text-slate-500 mt-1">Общий объём портфеля</p>
-        </div>
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Накопленные проценты</p>
-          <p id="inv-total-earned" class="text-3xl font-black mt-1 text-purple-400">$12,400</p>
-          <p class="text-[10px] text-slate-500 mt-1">Выплаченный Revenue Share</p>
-        </div>
-      </section>
-
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-chart-column text-emerald-400"></i> Портфель стартапов
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Управление активами и получением роялти</p>
-          </div>
-          <button onclick="collectAllRoyalties()" class="w-full sm:w-auto px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-2xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-coins"></i> Собрать проценты за месяц
-          </button>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-950/80 text-slate-400 uppercase font-semibold border-b border-slate-800">
-              <tr>
-                <th class="p-3.5 rounded-l-xl">Стартап</th>
-                <th class="p-3.5">Сфера</th>
-                <th class="p-3.5">Выручка / мес</th>
-                <th class="p-3.5">Доля (Share)</th>
-                <th class="p-3.5">Доход / мес</th>
-                <th class="p-3.5 rounded-r-xl">Окупаемость</th>
-              </tr>
-            </thead>
-            <tbody id="portfolio-table-body" class="divide-y divide-slate-800/60 text-slate-200">
-              <!-- Рендер проектов -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= TAB 1: DEAL FLOW ================= -->
-    <div id="tab-dealflow" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-fire text-amber-400"></i> Поток заявок (Deal Flow)
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Перспективные молодежные стартапы, готовые к инвестициям</p>
-          </div>
-          <button onclick="openModal('add-project-modal')" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-2xl border border-slate-700 transition">
-            + Подать свой проект
-          </button>
-        </div>
-
-        <div id="dealflow-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-          <!-- Заявки -->
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= TAB 2: YBA FINANCE ================= -->
-    <div id="tab-analytics" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-calculator text-indigo-400"></i> Финансовый калькулятор & Unit-Экономика
-        </h2>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Выручка (<span class="curr-sym">$</span>)</label>
-            <input type="number" id="in-revenue" value="45000" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Себестоимость / COGS (<span class="curr-sym">$</span>)</label>
-            <input type="number" id="in-cogs" value="15000" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Маркетинг & Трафик (<span class="curr-sym">$</span>)</label>
-            <input type="number" id="in-ads" value="6000" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Касса / Cash Balance (<span class="curr-sym">$</span>)</label>
-            <input type="number" id="in-cash" value="30000" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Заявки (Лиды)</label>
-            <input type="number" id="in-leads" value="800" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Продажи</label>
-            <input type="number" id="in-sales" value="150" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">LTV Срок (Мес)</label>
-            <input type="number" id="in-lifespan" value="12" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Повторные покупки в мес.</label>
-            <input type="number" id="in-repeat" value="1.5" oninput="calculate()" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-sm text-white focus:border-emerald-500 outline-none">
-          </div>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Чистая прибыль</p>
-          <p id="out-profit" class="text-2xl font-black mt-1 text-emerald-400">$0</p>
-          <p class="text-[10px] text-slate-500 mt-1">EBITDA</p>
-        </div>
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">LTV (Ценность клиента)</p>
-          <p id="out-ltv" class="text-2xl font-black mt-1 text-sky-400">$0</p>
-          <p class="text-[10px] text-slate-500 mt-1">За весь жизненный цикл</p>
-        </div>
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Стоимость привлечения (CAC)</p>
-          <p id="out-cac" class="text-2xl font-black mt-1 text-indigo-400">$0</p>
-          <p class="text-[10px] text-slate-500 mt-1">Затраты на 1 клиента</p>
-        </div>
-        <div class="glass-card p-5 rounded-3xl">
-          <p class="text-xs text-slate-400 font-medium">Индекс LTV / CAC</p>
-          <p id="out-ltv-cac" class="text-2xl font-black mt-1 text-purple-400">0x</p>
-          <p class="text-[10px] text-slate-500 mt-1">Целевое значение: > 3.0x</p>
-        </div>
-      </section>
-
-      <!-- WHAT-IF SIMULATOR -->
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-lg"></i>
-          <h2 class="text-base font-bold text-white">YBA AI "What-If" Симулятор гипотез</h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-          <div class="space-y-2 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-            <div class="flex justify-between text-xs">
-              <span class="text-slate-300">Изменение расходов на рекламу:</span>
-              <span id="slider-ads-val" class="font-bold text-amber-400">0%</span>
-            </div>
-            <input type="range" id="slider-ads" min="-50" max="100" value="0" oninput="calculate()" class="w-full accent-amber-500 cursor-pointer">
-          </div>
-          <div class="space-y-2 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
-            <div class="flex justify-between text-xs">
-              <span class="text-slate-300">Изменение конверсии продаж:</span>
-              <span id="slider-sales-val" class="font-bold text-emerald-400">0%</span>
-            </div>
-            <input type="range" id="slider-sales" min="-50" max="100" value="0" oninput="calculate()" class="w-full accent-emerald-500 cursor-pointer">
-          </div>
-        </div>
-
-        <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 flex items-start gap-3">
-          <i class="fa-solid fa-lightbulb text-amber-400 text-lg mt-0.5"></i>
-          <div>
-            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Результат симуляции:</h4>
-            <p id="sim-result" class="text-xs text-slate-400 mt-1">Передвигайте ползунки для проверки финансовых гипотез.</p>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= TAB 3: PRESENTATION & TIMER ================= -->
-    <div id="tab-presentation" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800/80 pb-4">
-          <div>
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-              <i class="fa-solid fa-stopwatch text-emerald-400"></i> Elevator Pitch Timer & Speech Coach
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Тренируйте тайминг и скорость речи перед питчингом</p>
-          </div>
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-indigo-500 flex items-center justify-center font-black text-white shadow-lg shadow-emerald-500/20">Y</div>
+        <div>
           <div class="flex items-center gap-2">
-            <button onclick="setPitchTime(30)" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-300 rounded-xl transition">30 сек</button>
-            <button onclick="setPitchTime(60)" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-slate-300 rounded-xl transition">1 мин</button>
-            <button onclick="setPitchTime(180)" class="px-3 py-1.5 bg-slate-950 hover:bg-slate-800 border border-emerald-500/30 text-xs font-bold text-emerald-400 rounded-xl transition">3 мин</button>
+            <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">YBA OS</span>
+            <span id="role-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold uppercase tracking-wider">Member Mode</span>
           </div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-          <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 text-center space-y-3">
-            <div id="pitch-timer-display" class="text-5xl font-black text-emerald-400 font-mono tracking-wider">03:00</div>
-            <div class="flex justify-center gap-2 pt-1">
-              <button id="btn-start-pitch" onclick="togglePitchTimer()" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-lg shadow-emerald-500/20">Старт</button>
-              <button onclick="resetPitchTimer()" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 font-bold text-xs rounded-xl transition">Сброс</button>
-            </div>
-          </div>
-          <div class="md:col-span-2 space-y-2">
-            <label class="block text-[10px] uppercase font-bold text-slate-400">Текст вашей речи:</label>
-            <textarea id="pitch-speech-text" oninput="analyzePitchSpeech()" placeholder="Вставьте текст вашего питча здесь..." class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-xs text-slate-200 outline-none focus:border-emerald-500 h-28 scrollbar-custom"></textarea>
-            <div class="flex justify-between text-[11px] text-slate-400">
-              <span id="pitch-wpm">Слов: 0 | Скорость: ~0 WPM</span>
-              <span id="pitch-recommendation" class="text-emerald-400 font-medium">Норма: 120-140 слов/мин</span>
-            </div>
-          </div>
+      <div class="flex items-center space-x-3">
+        <button id="btn-login" onclick="openLoginModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 transition flex items-center gap-2 shadow-sm hover:shadow">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i> Вход для админа
+        </button>
+        <button id="btn-logout" onclick="logoutAdmin()" class="hidden px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/50 transition flex items-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Выйти из админки
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+
+    <!-- Цитата дня -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border border-slate-800/80 p-5 shadow-xl">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex items-start gap-4">
+        <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400 shrink-0">
+          <i class="fa-solid fa-quote-left text-lg"></i>
         </div>
-      </section>
-
-      <!-- SLIDE STUDIO -->
-      <section class="glass-panel p-6 rounded-3xl space-y-6">
-        <div>
-          <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-teal-400"></i> YBA Slide Studio
-          </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Автоматическая генерация структуры слайдов для Pitch Deck</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950/60 p-5 rounded-2xl border border-slate-800">
-          <div class="md:col-span-2">
-            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Тема / Название стартапа</label>
-            <input type="text" id="pres-topic" value="EcoCharge — Интеллектуальная сеть зарядных станций" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:border-emerald-500 outline-none">
-          </div>
-          <div class="flex items-end">
-            <button onclick="generateUniversalPresentation()" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-lg shadow-emerald-500/20">
-              ✨ Сгенерировать слайды
+        <div class="space-y-1 flex-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider">Цитата дня</span>
+            <button onclick="nextQuote()" class="text-xs text-slate-400 hover:text-white transition flex items-center gap-1">
+              <i class="fa-solid fa-arrows-rotate"></i> Другая
             </button>
           </div>
+          <p id="quote-text" class="text-sm font-medium text-slate-200 italic">«Лучший способ предсказать будущее — создать его.»</p>
+          <p id="quote-author" class="text-xs text-slate-400 font-semibold">— Питер Друкер</p>
         </div>
-
-        <div id="slides-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
-          <!-- Слайды -->
-        </div>
-      </section>
+      </div>
     </div>
 
-    <!-- ================= TAB 4: VIRAL HOOKS GENERATOR ================= -->
-    <div id="tab-viral" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-6">
-        <div>
-          <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-hashtag text-pink-500"></i> Viral Hooks Generator (TikTok / Reels / Shorts)
-          </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Сгенерируйте цепляющие заголовочные хуки для органического трафика</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="md:col-span-2">
-            <input type="text" id="viral-product-input" value="Платформа для поиска сооснователей в стартап" class="w-full bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-xs text-white focus:border-emerald-500 outline-none">
-          </div>
-          <button onclick="generateViralHooks()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-2xl transition shadow-lg shadow-emerald-500/20">
-            🔥 Сгенерировать хуки
+    <!-- ========================================== -->
+    <!--  1. ИНТЕРФЕЙС УЧАСТНИКА (MEMBER)           -->
+    <!-- ========================================== -->
+    <div id="view-member" class="space-y-8">
+      
+      <!-- Курсы валют -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-coins text-amber-400"></i> Курсы валют к KZT
+          </h3>
+          <button onclick="fetchRealRates()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-rotate"></i> Обновить
           </button>
         </div>
 
-        <div id="viral-hooks-output" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-          <!-- Хуки -->
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= TAB 5: AI MENTOR CHAT ================= -->
-    <div id="tab-mentor" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-robot text-cyan-400"></i> YBA AI Co-Founder & Venture Mentor
-        </h2>
-
-        <div id="mentor-chat-box" class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 h-96 overflow-y-auto space-y-3 text-xs scrollbar-custom">
-          <div class="bg-slate-900/90 p-3.5 rounded-2xl max-w-lg border border-slate-800 text-slate-300">
-            <b class="text-emerald-400 block mb-1"><i class="fa-solid fa-robot mr-1"></i> YBA Mentor AI:</b>
-            Привет! Я твой виртуальный ментор. Спроси меня о привлечении инвестиций, структурировании сделок или юнит-экономике!
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 USD</span>
+            <span id="rate-display-usd" class="font-bold text-emerald-400">450.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 EUR</span>
+            <span id="rate-display-eur" class="font-bold text-emerald-400">490.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 CNY</span>
+            <span id="rate-display-cny" class="font-bold text-emerald-400">62.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 RUB</span>
+            <span id="rate-display-rub" class="font-bold text-emerald-400">5.00 ₸</span>
           </div>
         </div>
 
-        <div class="flex gap-2">
-          <input type="text" id="mentor-input" placeholder="Задай вопрос ментору..." class="flex-1 bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-xs text-white outline-none focus:border-emerald-500" onkeydown="if(event.key === 'Enter') sendMentorMessage()">
-          <button onclick="sendMentorMessage()" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-2xl transition shadow-lg shadow-emerald-500/20">Отправить</button>
-        </div>
-      </section>
-    </div>
-
-    <!-- ================= TAB 6: GRANTS ================= -->
-    <div id="tab-grants" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-award text-yellow-400"></i> Актуальные гранты и программы
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div class="glass-card p-5 rounded-2xl space-y-3">
-            <span class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-lg">Грант $10,000</span>
-            <h3 class="font-bold text-white text-sm">YBA Young Founder Seed Grant</h3>
-            <p class="text-xs text-slate-400">Безвозмездный грант на разработку MVP и проверку первых гипотез.</p>
-            <button onclick="addXP(50, 'Заявка на грант')" class="w-full py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-emerald-400 rounded-xl transition">Подать заявку (+50 XP)</button>
+        <div class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 space-y-3">
+          <div class="text-xs font-semibold text-slate-300">Конвертер валют:</div>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-center">
+            <input type="number" id="conv-amount" value="100" oninput="runConversion()" class="sm:col-span-2 bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+            <select id="conv-from" onchange="runConversion()" class="bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="CNY">CNY (¥)</option>
+              <option value="RUB">RUB (₽)</option>
+              <option value="KZT">KZT (₸)</option>
+            </select>
+            <div class="text-center text-xs text-slate-500 font-bold">➜</div>
+            <select id="conv-to" onchange="runConversion()" class="bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+              <option value="KZT" selected>KZT (₸)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="CNY">CNY (¥)</option>
+              <option value="RUB">RUB (₽)</option>
+            </select>
           </div>
-          <div class="glass-card p-5 rounded-2xl space-y-3">
-            <span class="text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20 px-2.5 py-1 rounded-lg">Акселератор</span>
-            <h3 class="font-bold text-white text-sm">TechStars Youth Batch 2026</h3>
-            <p class="text-xs text-slate-400">3-месячная интенсивная программа с выходом на международных инвесторов.</p>
-            <button onclick="addXP(50, 'Заявка на акселератор')" class="w-full py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-sky-400 rounded-xl transition">Подать заявку (+50 XP)</button>
+          <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800/80 flex justify-between items-center text-xs">
+            <span class="text-slate-400 font-medium">Результат:</span>
+            <span id="conv-result" class="font-bold text-amber-400 text-sm">45,000.00 ₸</span>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
 
-    <!-- ================= TAB 7: NETWORK ================= -->
-    <div id="tab-network" class="hidden space-y-6">
-      <section class="glass-panel p-6 rounded-3xl space-y-4">
-        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-users text-indigo-400"></i> YBA Co-Founder Matcher
-        </h2>
+      <!-- БИЗНЕС-ИНСТРУМЕНТЫ -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-emerald-400"></i> LTV / CAC
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="calc-cac" value="15" oninput="runAllCalculations()" placeholder="CAC ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="calc-ltv" value="60" oninput="runAllCalculations()" placeholder="LTV ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="calc-margin" value="70" oninput="runAllCalculations()" placeholder="Маржа (%)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Соотношение:</span>
+              <span id="unit-result" class="font-bold text-emerald-400">2.8x</span>
+            </div>
+          </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div class="glass-card p-5 rounded-2xl space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">AM</div>
-              <div>
-                <h4 class="font-bold text-white text-xs">Алихан М.</h4>
-                <p class="text-[10px] text-slate-400">Full-Stack Dev / AI</p>
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-hourglass-half text-amber-400"></i> Runway (Срок жизни)
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="runway-cash" value="50000" oninput="runAllCalculations()" placeholder="Баланс ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="runway-burn" value="5000" oninput="runAllCalculations()" placeholder="Расходы/мес ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Запас хода:</span>
+              <span id="runway-result" class="font-bold text-amber-400">10 мес.</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-indigo-400"></i> Оценка компании
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="val-investment" value="100000" oninput="runAllCalculations()" placeholder="Инвестиции ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="val-equity" value="10" oninput="runAllCalculations()" placeholder="Доля (%)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Post-money:</span>
+              <span id="valuation-result" class="font-bold text-indigo-400">$1,000,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ОБУЧАЮЩАЯ СПРАВКА ВНИЗУ -->
+        <div class="p-3 bg-slate-900/60 border border-slate-800/80 rounded-2xl shadow-lg">
+          <details class="group cursor-pointer">
+            <summary class="flex items-center justify-between font-semibold text-xs text-slate-300 hover:text-white transition select-none">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-circle-question text-emerald-400"></i> Как пользоваться калькуляторами? (Инструкция)</span>
+              <span class="text-slate-500 text-[10px] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            
+            <div class="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-[11px] text-slate-400 leading-relaxed">
+              <div class="space-y-1">
+                <p class="font-bold text-emerald-400">1. LTV / CAC (Юнит-экономика)</p>
+                <p>• <b>1-е поле:</b> Стоимость привлечения 1 клиента (CAC).</p>
+                <p>• <b>2-е поле:</b> Выручка с 1 клиента за всё время (LTV).</p>
+                <p>• <b>3-е поле:</b> Маржинальность бизнеса в %.</p>
+                <p class="text-slate-500 italic mt-1">💡 Показывает окупаемость рекламы. Отлично, если результат больше 3.0x.</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-bold text-amber-400">2. RUNWAY (Запас хода)</p>
+                <p>• <b>1-е поле:</b> Текущий остаток денег на счетах.</p>
+                <p>• <b>2-е поле:</b> Ежемесячные чистые расходы (Burn rate).</p>
+                <p class="text-slate-500 italic mt-1">💡 Показывает, на сколько месяцев хватит денег без новых инвестиций.</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-bold text-sky-400">3. ОЦЕНКА КОМПАНИИ (Post-money)</p>
+                <p>• <b>1-е поле:</b> Сумма инвестиций.</p>
+                <p>• <b>2-е поле:</b> Доля в %, которую отдаете за эти деньги.</p>
+                <p class="text-slate-500 italic mt-1">💡 Рассчитывает общую стоимость бизнеса после получения инвестиций.</p>
               </div>
             </div>
-            <p class="text-xs text-slate-400">«Ищу коммерческого фаундера в FinTech проект. Код с меня, продажи с тебя.»</p>
-            <button onclick="addXP(20, 'Контакт')" class="w-full py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-bold text-indigo-400 rounded-xl transition">Написать в Telegram</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-  </div>
-
-  <!-- MODAL: ADD PROJECT TO DEALFLOW -->
-  <div id="add-project-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel p-6 rounded-3xl max-w-md w-full space-y-4 border border-slate-800">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-white text-base">Добавить стартап в Deal Flow</h3>
-        <button onclick="closeModal('add-project-modal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block text-slate-400 mb-1">Название проекта</label>
-          <input type="text" id="new-proj-name" placeholder="например, CyberEdu" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500">
-        </div>
-        <div>
-          <label class="block text-slate-400 mb-1">Сфера</label>
-          <input type="text" id="new-proj-cat" placeholder="EdTech, FinTech..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-slate-400 mb-1">Запрос ($)</label>
-            <input type="number" id="new-proj-ask" placeholder="15000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500">
-          </div>
-          <div>
-            <label class="block text-slate-400 mb-1">Предлагаемый %</label>
-            <input type="number" id="new-proj-share" placeholder="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500">
-          </div>
-        </div>
-        <div>
-          <label class="block text-slate-400 mb-1">Месячная выручка ($)</label>
-          <input type="number" id="new-proj-rev" placeholder="5000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500">
-        </div>
-        <div>
-          <label class="block text-slate-400 mb-1">Краткое описание</label>
-          <textarea id="new-proj-desc" placeholder="Описание проекта..." class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-white outline-none focus:border-emerald-500 h-20"></textarea>
+          </details>
         </div>
       </div>
-      <button onclick="addNewDealFlowProject()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition">Опубликовать</button>
+
+      <!-- ИИ-СОВЕТНИК -->
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-indigo-950/30 border border-emerald-500/20 shadow-xl space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-robot text-base"></i> YBA AI Advisor — Экспертный анализ
+          </h3>
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">Live Analysis</span>
+        </div>
+        <p id="ai-advisor-output" class="text-xs text-slate-300 leading-relaxed">
+          Загрузка метрик проекта...
+        </p>
+      </div>
+
+      <!-- РАЗДЕЛ: ТЕНДЕРЫ (ЗАДАНИЯ) ДЛЯ УЧАСТНИКОВ -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-file-contract text-amber-400"></i> Задания (Тендеры)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Доступные задачи от экосистемы YBA. Выберите тендер и отправьте свой номер для участия.</p>
+          </div>
+          <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold">Активные заказы</span>
+        </div>
+        <div id="member-tenders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- РАЗДЕЛ: ВАКАНСИИ -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-briefcase text-emerald-400"></i> Вакансии
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Актуальные позиции в экосистеме YBA. Выберите вакансию и оставьте отклики</p>
+          </div>
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold">Открытые позиции</span>
+        </div>
+        <div id="member-jobs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Подача заявки и Чат -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-rocket text-indigo-400"></i> Заявка бизнеса / стартапа
+          </h3>
+          <form onsubmit="submitFounderApp(event)" class="space-y-3">
+            <input type="text" id="app-name" required placeholder="Название стартапа / бизнеса" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <input type="text" id="app-founder" required placeholder="Имя владельца / фаундера" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <input type="tel" id="app-phone" required placeholder="Номер телефона (+7 700 000 00 00)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <div class="grid grid-cols-2 gap-3">
+              <input type="number" id="app-ask" required placeholder="Запрос ($)" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+              <input type="number" id="app-share" required placeholder="Доля (%)" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            </div>
+            <textarea id="app-desc" required placeholder="Описание проекта и цели..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white" rows="2"></textarea>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Отправить Админу</button>
+          </form>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-comments text-emerald-400"></i> Чат с Админом
+            </h3>
+            <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">Вы: Участник</span>
+          </div>
+          <div id="chat-box-member" class="h-60 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80 overflow-y-auto space-y-2.5 text-xs"></div>
+          <div class="flex space-x-2">
+            <input type="text" id="chat-input-member" placeholder="Написать..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <button onclick="sendChatMessage(false)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-md shadow-indigo-600/20"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- JAVASCRIPT APP LOGIC -->
-  <script>
-    // 1. Currency Rates & State
-    const currencyRates = {
-      USD: { rate: 1, symbol: '$' },
-      KZT: { rate: 450, symbol: '₸' },
-      CNY: { rate: 7.2, symbol: '¥' },
-      EUR: { rate: 0.92, symbol: '€' },
-      RUB: { rate: 90, symbol: '₽' },
-      AED: { rate: 3.67, symbol: 'د.إ' }
-    };
-    let currentCurrency = 'USD';
+    <!-- ========================================== -->
+    <!--  2. ИНТЕРФЕЙС АДМИНА (ADMIN DASHBOARD)     -->
+    <!-- ========================================== -->
+    <div id="view-admin" class="space-y-6 hidden">
+      <nav class="flex space-x-2 border-b border-slate-800/80 pb-3 overflow-x-auto">
+        <button onclick="switchAdminTab('metrics')" id="atab-metrics" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl bg-slate-800 text-emerald-400 border border-slate-700/50">Метрики & Заработок</button>
+        <button onclick="switchAdminTab('dealflow')" id="atab-dealflow" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Заявки (Deal Flow)</button>
+        <button onclick="switchAdminTab('businesses')" id="atab-businesses" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Все Бизнесы</button>
+        <button onclick="switchAdminTab('jobs')" id="atab-jobs" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Вакансии & Отклики</button>
+        <button onclick="switchAdminTab('tenders')" id="atab-tenders" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Тендеры & Исполнители</button>
+        <button onclick="switchAdminTab('chat')" id="atab-chat" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Чат</button>
+      </nav>
 
-    // User Profile Data
-    let userData = {
-      balanceUSD: 100000,
-      xp: 100,
-      level: 1,
-      xpToNextLevel: 300
-    };
-
-    // Investments Data
-    let portfolio = [
-      { id: 1, name: "EcoPack", category: "GreenTech", revenueUSD: 12000, share: 10, investedUSD: 15000, earnedUSD: 6000 },
-      { id: 2, name: "SkillBoost", category: "EdTech", revenueUSD: 8500, share: 8, investedUSD: 10000, earnedUSD: 3400 },
-      { id: 3, name: "DropFast", category: "Logistics", revenueUSD: 15000, share: 5, investedUSD: 10000, earnedUSD: 3000 }
-    ];
-
-    let dealFlowProjects = [
-      { id: 101, name: "NeuroWrite", category: "AI Content", askUSD: 20000, share: 10, revUSD: 4000, desc: "AI-сервис для генерации копирайтинга для локального e-commerce." },
-      { id: 102, name: "UrbanRent", category: "PropTech", askUSD: 35000, share: 12, revUSD: 9000, desc: "Платформа шеринга коммерческих помещений без риелторов." }
-    ];
-
-    // 2. Helper Functions
-    function fmtCurr(amountInUSD) {
-      const { rate, symbol } = currencyRates[currentCurrency];
-      const val = Math.round(amountInUSD * rate);
-      return symbol + val.toLocaleString();
-    }
-
-    function setCurrency(curr) {
-      currentCurrency = curr;
-      document.querySelectorAll('[id^="btn-"]').forEach(btn => {
-        btn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-400 hover:text-white";
-      });
-      const activeBtn = document.getElementById(`btn-${curr}`);
-      if(activeBtn) activeBtn.className = "px-3 py-1.5 rounded-xl text-xs font-bold transition bg-emerald-500 text-slate-950 shadow-md";
-
-      document.querySelectorAll('.curr-sym').forEach(el => el.innerText = currencyRates[curr].symbol);
-      updateDashboard();
-      calculate();
-    }
-
-    function updateDashboard() {
-      document.getElementById('investor-balance').innerText = fmtCurr(userData.balanceUSD);
-      
-      const totalRoyaltyUSD = portfolio.reduce((acc, p) => acc + (p.revenueUSD * (p.share / 100)), 0);
-      document.getElementById('monthly-royalty').innerText = '+' + fmtCurr(totalRoyaltyUSD);
-
-      const totalInvUSD = portfolio.reduce((acc, p) => acc + p.investedUSD, 0);
-      const totalEarnedUSD = portfolio.reduce((acc, p) => acc + p.earnedUSD, 0);
-
-      document.getElementById('inv-count').innerText = portfolio.length;
-      document.getElementById('inv-total-invested').innerText = fmtCurr(totalInvUSD);
-      document.getElementById('inv-total-earned').innerText = fmtCurr(totalEarnedUSD);
-
-      document.getElementById('user-level').innerHTML = `<i class="fa-solid fa-trophy mr-1"></i> LVL ${userData.level}`;
-      document.getElementById('user-xp').innerText = `${userData.xp} / ${userData.xpToNextLevel} XP`;
-      document.getElementById('xp-bar').style.width = `${Math.min(100, (userData.xp / userData.xpToNextLevel) * 100)}%`;
-
-      renderPortfolio();
-      renderDealFlow();
-    }
-
-    function addXP(amount, actionName) {
-      userData.xp += amount;
-      if (userData.xp >= userData.xpToNextLevel) {
-        userData.level++;
-        userData.xp -= userData.xpToNextLevel;
-        userData.xpToNextLevel = Math.round(userData.xpToNextLevel * 1.5);
-        alert(`🎉 Поздравляем! Вы достигли уровня LVL ${userData.level}!`);
-      }
-      updateDashboard();
-    }
-
-    // 3. Tab Navigation
-    function switchTab(tabId) {
-      const tabs = ['investor', 'dealflow', 'analytics', 'presentation', 'viral', 'mentor', 'grants', 'network'];
-      tabs.forEach(t => {
-        const el = document.getElementById(`tab-${t}`);
-        const btn = document.getElementById(`tab-btn-${t}`);
-        if(el) el.classList.add('hidden');
-        if(btn) {
-          btn.className = "px-4 py-3 rounded-2xl border-b-2 border-transparent text-slate-400 hover:text-slate-200 font-bold text-xs md:text-sm whitespace-nowrap transition";
-        }
-      });
-
-      const activeTab = document.getElementById(`tab-${tabId}`);
-      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-      if(activeTab) activeTab.classList.remove('hidden');
-      if(activeBtn) {
-        activeBtn.className = "px-4 py-3 rounded-2xl border-b-2 border-emerald-400 text-emerald-400 font-bold text-xs md:text-sm whitespace-nowrap bg-emerald-500/10 transition";
-      }
-
-      if(tabId === 'presentation' && document.getElementById('slides-container').children.length === 0) {
-        generateUniversalPresentation();
-      }
-      if(tabId === 'viral' && document.getElementById('viral-hooks-output').children.length === 0) {
-        generateViralHooks();
-      }
-    }
-
-    // 4. Portfolio & Investments Logic
-    function renderPortfolio() {
-      const tbody = document.getElementById('portfolio-table-body');
-      tbody.innerHTML = '';
-      portfolio.forEach(p => {
-        const monthlyEarnings = p.revenueUSD * (p.share / 100);
-        const monthsToPayback = monthlyEarnings > 0 ? (p.investedUSD / monthlyEarnings).toFixed(1) : '∞';
+      <!-- ТАБ 1: МЕТРИКИ И ЗАРАБОТОК -->
+      <section id="acontent-metrics" class="acontent space-y-6">
         
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-900/50 transition">
-            <td class="p-3.5 font-bold text-white">${p.name}</td>
-            <td class="p-3.5 text-slate-400">${p.category}</td>
-            <td class="p-3.5 font-semibold">${fmtCurr(p.revenueUSD)}</td>
-            <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">${p.share}%</span></td>
-            <td class="p-3.5 text-emerald-400 font-bold">+${fmtCurr(monthlyEarnings)}</td>
-            <td class="p-3.5 text-slate-400">${monthsToPayback} мес.</td>
-          </tr>
-        `;
-      });
-    }
+        <!-- Карточки финансовой аналитики -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 shadow-xl">
+            <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Всего инвестировано</div>
+            <div id="admin-stat-invested" class="text-2xl font-black text-amber-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Общая сумма вложений YBA в проекты</p>
+          </div>
 
-    function collectAllRoyalties() {
-      const monthlyEarningsUSD = portfolio.reduce((acc, p) => {
-        const earning = p.revenueUSD * (p.share / 100);
-        p.earnedUSD += earning;
-        return acc + earning;
-      }, 0);
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 shadow-xl">
+            <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Оценка портфеля (Post-money)</div>
+            <div id="admin-stat-capital" class="text-2xl font-black text-sky-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Капитализация всех профинансированных компаний</p>
+          </div>
 
-      userData.balanceUSD += monthlyEarningsUSD;
-      addXP(40, 'Сбор дивидендов');
-      alert(`💰 Собрано роялти: +${fmtCurr(monthlyEarningsUSD)}! Баланс обновлен.`);
-    }
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/40 to-slate-900 border border-emerald-500/30 shadow-xl">
+            <div class="text-[11px] text-emerald-400 font-bold uppercase tracking-wider">Стоимость доли YBA</div>
+            <div id="admin-stat-share-value" class="text-2xl font-black text-emerald-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Общая стоимость вашей доли во всех активах</p>
+          </div>
 
-    // 5. Deal Flow Logic
-    function renderDealFlow() {
-      const container = document.getElementById('dealflow-list');
-      container.innerHTML = '';
-      dealFlowProjects.forEach(p => {
-        container.innerHTML += `
-          <div class="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 shadow-xl">
+            <div class="text-[11px] text-indigo-400 font-bold uppercase tracking-wider">Прогноз дохода (в месяц)</div>
+            <div id="admin-stat-monthly-revenue" class="text-2xl font-black text-indigo-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Ожидаемая чистая прибыль YBA от долей в месяц</p>
+          </div>
+        </div>
+
+        <!-- Подробная аналитическая таблица портфеля -->
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between flex-wrap gap-2">
             <div>
-              <div class="flex justify-between items-start">
-                <h3 class="font-bold text-white text-base">${p.name}</h3>
-                <span class="text-[10px] uppercase font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-md">${p.category}</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-2">${p.desc}</p>
-            </div>
-            <div class="space-y-3">
-              <div class="bg-slate-950/60 p-3 rounded-xl grid grid-cols-2 gap-2 text-center text-xs">
-                <div>
-                  <span class="text-slate-500 block text-[10px]">Запрос</span>
-                  <span class="font-bold text-emerald-400">${fmtCurr(p.askUSD)} (${p.share}%)</span>
-                </div>
-                <div>
-                  <span class="text-slate-500 block text-[10px]">Выручка / мес</span>
-                  <span class="font-bold text-sky-400">${fmtCurr(p.revUSD)}</span>
-                </div>
-              </div>
-              <button onclick="investInProject(${p.id})" class="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-md shadow-emerald-500/20">
-                Инвестировать ${fmtCurr(p.askUSD)}
-              </button>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-emerald-400"></i> Детальная аналитика доходности проектов
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">Инвестиции, капитализация и ожидаемый ежемесячный доход YBA по каждой профинансированной компании</p>
             </div>
           </div>
-        `;
-      });
-    }
 
-    function investInProject(id) {
-      const proj = dealFlowProjects.find(p => p.id === id);
-      if (!proj) return;
-
-      if (userData.balanceUSD < proj.askUSD) {
-        alert("❌ Недостаточно средств на балансе!");
-        return;
-      }
-
-      userData.balanceUSD -= proj.askUSD;
-      portfolio.push({
-        id: Date.now(),
-        name: proj.name,
-        category: proj.category,
-        revenueUSD: proj.revUSD,
-        share: proj.share,
-        investedUSD: proj.askUSD,
-        earnedUSD: 0
-      });
-
-      dealFlowProjects = dealFlowProjects.filter(p => p.id !== id);
-      addXP(100, 'Инвестиция');
-      alert(`🚀 Вы проинвестировали в ${proj.name}! Проект добавлен в ваш портфель.`);
-    }
-
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-    function addNewDealFlowProject() {
-      const name = document.getElementById('new-proj-name').value;
-      const cat = document.getElementById('new-proj-cat').value || 'Startup';
-      const ask = parseFloat(document.getElementById('new-proj-ask').value) || 0;
-      const share = parseFloat(document.getElementById('new-proj-share').value) || 0;
-      const rev = parseFloat(document.getElementById('new-proj-rev').value) || 0;
-      const desc = document.getElementById('new-proj-desc').value || 'Без описания.';
-
-      if(!name || ask <= 0) {
-        alert("Заполните корректно имя и сумму запроса.");
-        return;
-      }
-
-      dealFlowProjects.push({
-        id: Date.now(),
-        name, category: cat, askUSD: ask, share, revUSD: rev, desc
-      });
-
-      closeModal('add-project-modal');
-      addXP(30, 'Подача проекта');
-      renderDealFlow();
-    }
-
-    // 6. Financial Calculator & What-If Simulator
-    function calculate() {
-      const rate = currencyRates[currentCurrency].rate;
-      
-      const rev = (parseFloat(document.getElementById('in-revenue').value) || 0) / rate;
-      const cogs = (parseFloat(document.getElementById('in-cogs').value) || 0) / rate;
-      let ads = (parseFloat(document.getElementById('in-ads').value) || 0) / rate;
-      const leads = parseFloat(document.getElementById('in-leads').value) || 1;
-      let sales = parseFloat(document.getElementById('in-sales').value) || 1;
-      const lifespan = parseFloat(document.getElementById('in-lifespan').value) || 12;
-      const repeat = parseFloat(document.getElementById('in-repeat').value) || 1;
-
-      // Sliders
-      const adsDelta = parseFloat(document.getElementById('slider-ads').value);
-      const salesDelta = parseFloat(document.getElementById('slider-sales').value);
-
-      document.getElementById('slider-ads-val').innerText = `${adsDelta > 0 ? '+' : ''}${adsDelta}%`;
-      document.getElementById('slider-sales-val').innerText = `${salesDelta > 0 ? '+' : ''}${salesDelta}%`;
-
-      ads = ads * (1 + adsDelta / 100);
-      sales = sales * (1 + salesDelta / 100);
-
-      const profitUSD = rev - cogs - ads;
-      const avgCheckUSD = sales > 0 ? (rev / sales) : 0;
-      const cacUSD = sales > 0 ? (ads / sales) : 0;
-      const ltvUSD = avgCheckUSD * repeat * lifespan;
-      const ltvCacRatio = cacUSD > 0 ? (ltvUSD / cacUSD).toFixed(1) : 0;
-
-      document.getElementById('out-profit').innerText = fmtCurr(profitUSD);
-      document.getElementById('out-ltv').innerText = fmtCurr(ltvUSD);
-      document.getElementById('out-cac').innerText = fmtCurr(cacUSD);
-      document.getElementById('out-ltv-cac').innerText = `${ltvCacRatio}x`;
-
-      const simText = `При изменении бюджета маркетинга (${adsDelta}%) и продаж (${salesDelta}%), ваша чистая прибыль составит ${fmtCurr(profitUSD)}, а юнит-индекс LTV/CAC: ${ltvCacRatio}x.`;
-      document.getElementById('sim-result').innerText = simText;
-    }
-
-    // 7. Timer & Speech Coach
-    let pitchTimerInterval = null;
-    let pitchSecondsLeft = 180;
-    let pitchIsRunning = false;
-
-    function setPitchTime(sec) {
-      pitchSecondsLeft = sec;
-      pitchIsRunning = false;
-      clearInterval(pitchTimerInterval);
-      document.getElementById('btn-start-pitch').innerText = "Старт";
-      updateTimerDisplay();
-    }
-
-    function updateTimerDisplay() {
-      const m = Math.floor(pitchSecondsLeft / 60).toString().padStart(2, '0');
-      const s = (pitchSecondsLeft % 60).toString().padStart(2, '0');
-      document.getElementById('pitch-timer-display').innerText = `${m}:${s}`;
-    }
-
-    function togglePitchTimer() {
-      if (pitchIsRunning) {
-        clearInterval(pitchTimerInterval);
-        pitchIsRunning = false;
-        document.getElementById('btn-start-pitch').innerText = "Старт";
-      } else {
-        pitchIsRunning = true;
-        document.getElementById('btn-start-pitch').innerText = "Пауза";
-        pitchTimerInterval = setInterval(() => {
-          if (pitchSecondsLeft > 0) {
-            pitchSecondsLeft--;
-            updateTimerDisplay();
-          } else {
-            clearInterval(pitchTimerInterval);
-            pitchIsRunning = false;
-            alert("⏰ Время питча истекло!");
-          }
-        }, 1000);
-      }
-    }
-
-    function resetPitchTimer() {
-      setPitchTime(180);
-    }
-
-    function analyzePitchSpeech() {
-      const text = document.getElementById('pitch-speech-text').value.trim();
-      const words = text ? text.split(/\s+/).length : 0;
-      const minutes = pitchSecondsLeft > 0 ? (180 - pitchSecondsLeft) / 60 : 3;
-      const wpm = minutes > 0 ? Math.round(words / minutes) : 0;
-
-      document.getElementById('pitch-wpm').innerText = `Слов: ${words} | Скорость: ~${wpm} WPM`;
-    }
-
-    // 8. Slide Generator
-    function generateUniversalPresentation() {
-      const topic = document.getElementById('pres-topic').value || 'Наш Стартап';
-      const slides = [
-        { title: "1. Титульный", body: `Презентация проекта: <b>${topic}</b>.<br>Решение для быстрорастущего рынка.` },
-        { title: "2. Проблема", body: "Существующие решения слишком сложные, дорогие и не адаптированы под молодежный сегмент." },
-        { title: "3. Решение", body: "Наш продукт автоматизирует ключевые процессы и сокращает издержки клиентов на 40%." },
-        { title: "4. Бизнес-модель", body: "Подписка (SaaS) + комиссия за транзакции (Revenue Share)." },
-        { title: "5. Рынок (TAM/SAM/SOM)", body: "Объем целевого рынка оценивается в $1.2 млрд с ежегодным ростом 22%." },
-        { title: "6. План и Запрос", body: "Ищем $25,000 за 10% доли для масштабирования маркетинга и релиза v2.0." }
-      ];
-
-      const container = document.getElementById('slides-container');
-      container.innerHTML = '';
-      slides.forEach(s => {
-        container.innerHTML += `
-          <div class="glass-card p-5 rounded-2xl space-y-2 border border-slate-800">
-            <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider">${s.title}</h4>
-            <p class="text-xs text-slate-300 leading-relaxed">${s.body}</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400">
+                  <th class="py-3 px-3">Компания</th>
+                  <th class="py-3 px-3">Инвестировано (Ask)</th>
+                  <th class="py-3 px-3">Доля YBA</th>
+                  <th class="py-3 px-3">Оценка (Post-money)</th>
+                  <th class="py-3 px-3">Стоимость доли YBA</th>
+                  <th class="py-3 px-3 text-right">Ежемес. прибыль YBA (Прогноз)</th>
+                </tr>
+              </thead>
+              <tbody id="admin-analytics-table-body" class="divide-y divide-slate-800/50 text-slate-200">
+                <!-- Строки формируются автоматически из скрипта -->
+              </tbody>
+            </table>
           </div>
-        `;
-      });
-    }
+        </div>
 
-    // 9. Viral Hooks Generator
-    function generateViralHooks() {
-      const prod = document.getElementById('viral-product-input').value || 'Мой продукт';
-      const hooks = [
-        `🔥 "Перестаньте делать Х в 2026 году! Вот как ${prod} меняет всё..."`,
-        `💡 "3 секрета, как развить свой бизнес, используя ${prod}."`,
-        `😱 "Я потратил 3 года, чтобы понять это, а ${prod} делает это за 5 минут..."`,
-        `🚀 "Почему инвесторы скрывают этот инструмент: ${prod}."`
-      ];
+      </section>
 
-      const container = document.getElementById('viral-hooks-output');
-      container.innerHTML = '';
-      hooks.forEach(h => {
-        container.innerHTML += `
-          <div class="glass-card p-4 rounded-2xl flex items-center justify-between gap-3 border border-slate-800">
-            <p class="text-xs font-semibold text-slate-200">${h}</p>
-            <button onclick="navigator.clipboard.writeText('${h.replace(/"/g, '&quot;')}'); alert('Скопировано!');" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold rounded-lg transition">
-              Копия
+      <!-- ТАБ 2: ЗАЯВКИ (DEAL FLOW) -->
+      <section id="acontent-dealflow" class="acontent space-y-4 hidden">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-white">Входящие заявки от участников</h2>
+        </div>
+        <div id="admin-dealflow-list" class="space-y-3"></div>
+      </section>
+
+      <!-- ТАБ 3: ВСЕ БИЗНЕСЫ -->
+      <section id="acontent-businesses" class="acontent space-y-4 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-2 shadow-xl">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-briefcase text-emerald-400"></i> Все Активные Бизнесы & Оценка Капитала
+          </h2>
+          <p class="text-xs text-slate-400">Все компании, находящиеся в портфеле.</p>
+        </div>
+        <div id="admin-businesses-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <!-- ТАБ 4: ВАКАНСИИ И ОТКЛИКИ (АДМИН) -->
+      <section id="acontent-jobs" class="acontent space-y-6 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white">Разместить новую вакансию</h3>
+          <form onsubmit="addBusinessJob(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <select id="job-business-select" required class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            </select>
+            <input type="text" id="job-title" required placeholder="Должность (напр. SMM)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="job-salary" required placeholder="Оплата (напр. 250,000₸)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs py-2 rounded-xl transition shadow-lg shadow-emerald-600/20">Опубликовать</button>
+          </form>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Опубликованные вакансии</h4>
+            <div id="admin-jobs-list" class="space-y-3"></div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-users text-emerald-400"></i> Поступившие отклики
+            </h4>
+            <div id="admin-job-responses-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ТАБ 5: ТЕНДЕРЫ & ЗАДАНИЯ (АДМИН) -->
+      <section id="acontent-tenders" class="acontent space-y-6 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-plus text-amber-400"></i> Выложить новый тендер (задание)
+            </h3>
+            <button onclick="clearCompletedTenders()" class="px-3 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/50 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-trash-can"></i> Очистить завершенные/выполненные
             </button>
           </div>
-        `;
-      });
-    }
-
-    // 10. AI Mentor
-    function sendMentorMessage() {
-      const input = document.getElementById('mentor-input');
-      const val = input.value.trim();
-      if (!val) return;
-
-      const chatBox = document.getElementById('mentor-chat-box');
-      chatBox.innerHTML += `
-        <div class="bg-emerald-500/10 p-3.5 rounded-2xl max-w-lg border border-emerald-500/20 text-emerald-200 ml-auto text-right">
-          <b class="block mb-1 text-emerald-400">Вы:</b> ${val}
+          <form onsubmit="addAdminTender(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <input type="text" id="tender-title" required placeholder="Название задания / тендера" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="tender-project" required placeholder="Проект / Компания" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="tender-budget" required placeholder="Бюджет (напр. 150 000 ₸)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs py-2 rounded-xl transition shadow-lg shadow-amber-600/20">Выложить тендер</button>
+          </form>
         </div>
-      `;
-      input.value = '';
 
-      setTimeout(() => {
-        const answers = [
-          "Отличный вопрос! При оценке стартапа всегда фокусируйся на LTV/CAC и скорости сходимости юнит-экономики.",
-          "Для эффективного питча инвестору покажи чёткий traction: динамику роста выручки от месяца к месяцу.",
-          "Советую структурировать сделку через конвертируемый заём (SAFE/Convertible Note) для упрощения оценки."
-        ];
-        const reply = answers[Math.floor(Math.random() * answers.length)];
-
-        chatBox.innerHTML += `
-          <div class="bg-slate-900/90 p-3.5 rounded-2xl max-w-lg border border-slate-800 text-slate-300">
-            <b class="text-emerald-400 block mb-1"><i class="fa-solid fa-robot mr-1"></i> YBA Mentor AI:</b>
-            ${reply}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Выложенные тендеры</h4>
+            <div id="admin-tenders-list" class="space-y-3"></div>
           </div>
-        `;
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 600);
-    }
 
-    // Initialize App
-    window.onload = () => {
-      updateDashboard();
-      calculate();
-    };
-  </script>
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-handshake text-amber-400"></i> Заявки от участников (Телефон + Предложение)
+            </h4>
+            <div id="admin-tender-responses-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ТАБ 6: ЧАТ -->
+      <section id="acontent-chat" class="acontent space-y-4 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 max-w-2xl shadow-xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">💬 Общий чат</h3>
+            <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Вы: Админ</span>
+          </div>
+          <div id="chat-box-admin" class="h-80 bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 overflow-y-auto space-y-3 text-xs"></div>
+          <div class="flex space-x-2">
+            <input type="text" id="chat-input-admin" placeholder="Ответить участникам..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <button onclick="sendChatMessage(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-600/20">Отправить</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ОТКЛИК НА ВАКАНСИЮ -->
+  <div id="job-apply-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeJobApplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="space-y-1">
+        <h3 class="text-sm font-bold text-white">Отклик на вакансию</h3>
+        <p id="job-modal-title" class="text-xs text-emerald-400 font-semibold"></p>
+      </div>
+      <form onsubmit="submitJobResponse(event)" class="space-y-3">
+        <input type="hidden" id="job-apply-id">
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше имя</label>
+          <input type="text" id="job-apply-name" required placeholder="Ернар Валиев" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваш номер телефона</label>
+          <input type="tel" id="job-apply-phone" required placeholder="+7 700 000 00 00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Отправить отклик</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ВЗЯТЬ ТЕНДЕР (ЗАДАНИЕ) -->
+  <div id="tender-apply-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeTenderApplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="space-y-1">
+        <h3 class="text-sm font-bold text-white">Принять участие в тендере</h3>
+        <p id="tender-modal-title" class="text-xs text-amber-400 font-semibold"></p>
+      </div>
+      <form onsubmit="submitTenderResponse(event)" class="space-y-3">
+        <input type="hidden" id="tender-apply-id">
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше имя / Компания</label>
+          <input type="text" id="tender-apply-name" required placeholder="Алихан Ибрагимов" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваш номер телефона</label>
+          <input type="tel" id="tender-apply-phone" required placeholder="+7 700 000 00 00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше предложение (Сроки, детали)</label>
+          <textarea id="tender-apply-offer" required placeholder="Готов выполнить за 3 дня..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white" rows="2"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-amber-600/20">Взять тендер</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО ВХОДА В АДМИНКУ -->
+  <div id="login-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800/80 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="text-center space-y-1">
+        <h3 class="text-base font-bold text-white">Панель Админа</h3>
+        <p class="text-xs text-slate-400">Введите пароль доступа</p>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-3">
+        <div>
+          <input type="password" id="admin-pass-input" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+          <p id="login-error" class="text-[11px] text-rose-400 mt-1 hidden">Неверный пароль!</p>
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>

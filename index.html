@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YBA OS — Ecosystem Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-indigo-500 flex items-center justify-center font-black text-white shadow-lg shadow-emerald-500/20">Y</div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">YBA OS</span>
+            <span id="role-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold uppercase tracking-wider">Member Mode</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="btn-login" onclick="openLoginModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 transition flex items-center gap-2 shadow-sm hover:shadow">
+          <i class="fa-solid fa-shield-halved text-emerald-400"></i> Вход для админа
+        </button>
+        <button id="btn-logout" onclick="logoutAdmin()" class="hidden px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/50 transition flex items-center gap-2">
+          <i class="fa-solid fa-right-from-bracket"></i> Выйти из админки
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+
+    <!-- Цитата дня -->
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 border border-slate-800/80 p-5 shadow-xl">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="flex items-start gap-4">
+        <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400 shrink-0">
+          <i class="fa-solid fa-quote-left text-lg"></i>
+        </div>
+        <div class="space-y-1 flex-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider">Цитата дня</span>
+            <button onclick="nextQuote()" class="text-xs text-slate-400 hover:text-white transition flex items-center gap-1">
+              <i class="fa-solid fa-arrows-rotate"></i> Другая
+            </button>
+          </div>
+          <p id="quote-text" class="text-sm font-medium text-slate-200 italic">«Лучший способ предсказать будущее — создать его.»</p>
+          <p id="quote-author" class="text-xs text-slate-400 font-semibold">— Питер Друкер</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!--  1. ИНТЕРФЕЙС УЧАСТНИКА (MEMBER)           -->
+    <!-- ========================================== -->
+    <div id="view-member" class="space-y-8">
+      
+      <!-- Курсы валют -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-coins text-amber-400"></i> Курсы валют к KZT
+          </h3>
+          <button onclick="fetchRealRates()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-rotate"></i> Обновить
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 USD</span>
+            <span id="rate-display-usd" class="font-bold text-emerald-400">450.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 EUR</span>
+            <span id="rate-display-eur" class="font-bold text-emerald-400">490.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 CNY</span>
+            <span id="rate-display-cny" class="font-bold text-emerald-400">62.00 ₸</span>
+          </div>
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 flex justify-between items-center">
+            <span class="text-slate-400 font-medium">1 RUB</span>
+            <span id="rate-display-rub" class="font-bold text-emerald-400">5.00 ₸</span>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-950/80 rounded-xl border border-slate-800 space-y-3">
+          <div class="text-xs font-semibold text-slate-300">Конвертер валют:</div>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-center">
+            <input type="number" id="conv-amount" value="100" oninput="runConversion()" class="sm:col-span-2 bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+            <select id="conv-from" onchange="runConversion()" class="bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="CNY">CNY (¥)</option>
+              <option value="RUB">RUB (₽)</option>
+              <option value="KZT">KZT (₸)</option>
+            </select>
+            <div class="text-center text-xs text-slate-500 font-bold">➜</div>
+            <select id="conv-to" onchange="runConversion()" class="bg-slate-900 border border-slate-700/80 text-xs text-white px-3 py-2 rounded-lg">
+              <option value="KZT" selected>KZT (₸)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="CNY">CNY (¥)</option>
+              <option value="RUB">RUB (₽)</option>
+            </select>
+          </div>
+          <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800/80 flex justify-between items-center text-xs">
+            <span class="text-slate-400 font-medium">Результат:</span>
+            <span id="conv-result" class="font-bold text-amber-400 text-sm">45,000.00 ₸</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- БИЗНЕС-ИНСТРУМЕНТЫ -->
+      <div class="space-y-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-chart-line text-emerald-400"></i> LTV / CAC
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="calc-cac" value="15" oninput="runAllCalculations()" placeholder="CAC ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="calc-ltv" value="60" oninput="runAllCalculations()" placeholder="LTV ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="calc-margin" value="70" oninput="runAllCalculations()" placeholder="Маржа (%)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Соотношение:</span>
+              <span id="unit-result" class="font-bold text-emerald-400">2.8x</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-hourglass-half text-amber-400"></i> Runway (Срок жизни)
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="runway-cash" value="50000" oninput="runAllCalculations()" placeholder="Баланс ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="runway-burn" value="5000" oninput="runAllCalculations()" placeholder="Расходы/мес ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Запас хода:</span>
+              <span id="runway-result" class="font-bold text-amber-400">10 мес.</span>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-lg">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-calculator text-indigo-400"></i> Оценка компании
+            </h3>
+            <div class="space-y-2">
+              <input type="number" id="val-investment" value="100000" oninput="runAllCalculations()" placeholder="Инвестиции ($)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <input type="number" id="val-equity" value="10" oninput="runAllCalculations()" placeholder="Доля (%)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div class="p-3 rounded-xl bg-slate-950/80 text-xs flex justify-between items-center border border-slate-800/60">
+              <span class="text-slate-400 font-medium">Post-money:</span>
+              <span id="valuation-result" class="font-bold text-indigo-400">$1,000,000</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ОБУЧАЮЩАЯ СПРАВКА ВНИЗУ -->
+        <div class="p-3 bg-slate-900/60 border border-slate-800/80 rounded-2xl shadow-lg">
+          <details class="group cursor-pointer">
+            <summary class="flex items-center justify-between font-semibold text-xs text-slate-300 hover:text-white transition select-none">
+              <span class="flex items-center gap-2"><i class="fa-solid fa-circle-question text-emerald-400"></i> Как пользоваться калькуляторами? (Инструкция)</span>
+              <span class="text-slate-500 text-[10px] group-open:rotate-180 transition-transform duration-200">▼</span>
+            </summary>
+            
+            <div class="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-[11px] text-slate-400 leading-relaxed">
+              <div class="space-y-1">
+                <p class="font-bold text-emerald-400">1. LTV / CAC (Юнит-экономика)</p>
+                <p>• <b>1-е поле:</b> Стоимость привлечения 1 клиента (CAC).</p>
+                <p>• <b>2-е поле:</b> Выручка с 1 клиента за всё время (LTV).</p>
+                <p>• <b>3-е поле:</b> Маржинальность бизнеса в %.</p>
+                <p class="text-slate-500 italic mt-1">💡 Показывает окупаемость рекламы. Отлично, если результат больше 3.0x.</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-bold text-amber-400">2. RUNWAY (Запас хода)</p>
+                <p>• <b>1-е поле:</b> Текущий остаток денег на счетах.</p>
+                <p>• <b>2-е поле:</b> Ежемесячные чистые расходы (Burn rate).</p>
+                <p class="text-slate-500 italic mt-1">💡 Показывает, на сколько месяцев хватит денег без новых инвестиций.</p>
+              </div>
+
+              <div class="space-y-1">
+                <p class="font-bold text-sky-400">3. ОЦЕНКА КОМПАНИИ (Post-money)</p>
+                <p>• <b>1-е поле:</b> Сумма инвестиций.</p>
+                <p>• <b>2-е поле:</b> Доля в %, которую отдаете за эти деньги.</p>
+                <p class="text-slate-500 italic mt-1">💡 Рассчитывает общую стоимость бизнеса после получения инвестиций.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- ИИ-СОВЕТНИК -->
+      <div class="p-6 rounded-2xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-indigo-950/30 border border-emerald-500/20 shadow-xl space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-robot text-base"></i> YBA AI Advisor — Экспертный анализ
+          </h3>
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-semibold">Live Analysis</span>
+        </div>
+        <p id="ai-advisor-output" class="text-xs text-slate-300 leading-relaxed">
+          Загрузка метрик проекта...
+        </p>
+      </div>
+
+      <!-- РАЗДЕЛ: ТЕНДЕРЫ (ЗАДАНИЯ) ДЛЯ УЧАСТНИКОВ -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-file-contract text-amber-400"></i> Задания (Тендеры)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Доступные задачи от экосистемы YBA. Выберите тендер и отправьте свой номер для участия.</p>
+          </div>
+          <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-bold">Активные заказы</span>
+        </div>
+        <div id="member-tenders-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- РАЗДЕЛ: ВАКАНСИИ -->
+      <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-briefcase text-emerald-400"></i> Вакансии
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Актуальные позиции в экосистеме YBA. Выберите вакансию и оставьте отклики</p>
+          </div>
+          <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold">Открытые позиции</span>
+        </div>
+        <div id="member-jobs-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Подача заявки и Чат -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-rocket text-indigo-400"></i> Заявка бизнеса / стартапа
+          </h3>
+          <form onsubmit="submitFounderApp(event)" class="space-y-3">
+            <input type="text" id="app-name" required placeholder="Название стартапа / бизнеса" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <input type="text" id="app-founder" required placeholder="Имя владельца / фаундера" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <input type="tel" id="app-phone" required placeholder="Номер телефона (+7 700 000 00 00)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <div class="grid grid-cols-2 gap-3">
+              <input type="number" id="app-ask" required placeholder="Запрос ($)" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+              <input type="number" id="app-share" required placeholder="Доля (%)" class="bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            </div>
+            <textarea id="app-desc" required placeholder="Описание проекта и цели..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white" rows="2"></textarea>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Отправить Админу</button>
+          </form>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-3 shadow-xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-comments text-emerald-400"></i> Чат с Админом
+            </h3>
+            <span class="text-[10px] text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">Вы: Участник</span>
+          </div>
+          <div id="chat-box-member" class="h-60 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800/80 overflow-y-auto space-y-2.5 text-xs"></div>
+          <div class="flex space-x-2">
+            <input type="text" id="chat-input-member" placeholder="Написать..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <button onclick="sendChatMessage(false)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow-md shadow-indigo-600/20"><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!--  2. ИНТЕРФЕЙС АДМИНА (ADMIN DASHBOARD)     -->
+    <!-- ========================================== -->
+    <div id="view-admin" class="space-y-6 hidden">
+      <nav class="flex space-x-2 border-b border-slate-800/80 pb-3 overflow-x-auto">
+        <button onclick="switchAdminTab('metrics')" id="atab-metrics" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl bg-slate-800 text-emerald-400 border border-slate-700/50">Метрики & Заработок</button>
+        <button onclick="switchAdminTab('dealflow')" id="atab-dealflow" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Заявки (Deal Flow)</button>
+        <button onclick="switchAdminTab('businesses')" id="atab-businesses" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Все Бизнесы</button>
+        <button onclick="switchAdminTab('jobs')" id="atab-jobs" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Вакансии & Отклики</button>
+        <button onclick="switchAdminTab('tenders')" id="atab-tenders" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Тендеры & Исполнители</button>
+        <button onclick="switchAdminTab('chat')" id="atab-chat" class="atab-btn px-4 py-2 font-semibold text-xs rounded-xl text-slate-400 hover:text-white transition">Чат</button>
+      </nav>
+
+      <!-- ТАБ 1: МЕТРИКИ И ЗАРАБОТОК -->
+      <section id="acontent-metrics" class="acontent space-y-6">
+        
+        <!-- Карточки финансовой аналитики -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 shadow-xl">
+            <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Всего инвестировано</div>
+            <div id="admin-stat-invested" class="text-2xl font-black text-amber-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Общая сумма вложений YBA в проекты</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 shadow-xl">
+            <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Оценка портфеля (Post-money)</div>
+            <div id="admin-stat-capital" class="text-2xl font-black text-sky-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Капитализация всех профинансированных компаний</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/40 to-slate-900 border border-emerald-500/30 shadow-xl">
+            <div class="text-[11px] text-emerald-400 font-bold uppercase tracking-wider">Стоимость доли YBA</div>
+            <div id="admin-stat-share-value" class="text-2xl font-black text-emerald-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Общая стоимость вашей доли во всех активах</p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-indigo-500/30 shadow-xl">
+            <div class="text-[11px] text-indigo-400 font-bold uppercase tracking-wider">Прогноз дохода (в месяц)</div>
+            <div id="admin-stat-monthly-revenue" class="text-2xl font-black text-indigo-400 mt-2">$0</div>
+            <p class="text-[10px] text-slate-500 mt-1">Ожидаемая чистая прибыль YBA от долей в месяц</p>
+          </div>
+        </div>
+
+        <!-- Подробная аналитическая таблица портфеля -->
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-emerald-400"></i> Детальная аналитика доходности проектов
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">Инвестиции, капитализация и ожидаемый ежемесячный доход YBA по каждой профинансированной компании</p>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400">
+                  <th class="py-3 px-3">Компания</th>
+                  <th class="py-3 px-3">Инвестировано (Ask)</th>
+                  <th class="py-3 px-3">Доля YBA</th>
+                  <th class="py-3 px-3">Оценка (Post-money)</th>
+                  <th class="py-3 px-3">Стоимость доли YBA</th>
+                  <th class="py-3 px-3 text-right">Ежемес. прибыль YBA (Прогноз)</th>
+                </tr>
+              </thead>
+              <tbody id="admin-analytics-table-body" class="divide-y divide-slate-800/50 text-slate-200">
+                <!-- Строки формируются автоматически из скрипта -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ТАБ 2: ЗАЯВКИ (DEAL FLOW) -->
+      <section id="acontent-dealflow" class="acontent space-y-4 hidden">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-white">Входящие заявки от участников</h2>
+        </div>
+        <div id="admin-dealflow-list" class="space-y-3"></div>
+      </section>
+
+      <!-- ТАБ 3: ВСЕ БИЗНЕСЫ -->
+      <section id="acontent-businesses" class="acontent space-y-4 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-2 shadow-xl">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-briefcase text-emerald-400"></i> Все Активные Бизнесы & Оценка Капитала
+          </h2>
+          <p class="text-xs text-slate-400">Все компании, находящиеся в портфеле.</p>
+        </div>
+        <div id="admin-businesses-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <!-- ТАБ 4: ВАКАНСИИ И ОТКЛИКИ (АДМИН) -->
+      <section id="acontent-jobs" class="acontent space-y-6 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <h3 class="text-sm font-bold text-white">Разместить новую вакансию</h3>
+          <form onsubmit="addBusinessJob(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <select id="job-business-select" required class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            </select>
+            <input type="text" id="job-title" required placeholder="Должность (напр. SMM)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="job-salary" required placeholder="Оплата (напр. 250,000₸)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs py-2 rounded-xl transition shadow-lg shadow-emerald-600/20">Опубликовать</button>
+          </form>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Опубликованные вакансии</h4>
+            <div id="admin-jobs-list" class="space-y-3"></div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-users text-emerald-400"></i> Поступившие отклики
+            </h4>
+            <div id="admin-job-responses-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ТАБ 5: ТЕНДЕРЫ & ЗАДАНИЯ (АДМИН) -->
+      <section id="acontent-tenders" class="acontent space-y-6 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 shadow-xl">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-plus text-amber-400"></i> Выложить новый тендер (задание)
+            </h3>
+            <button onclick="clearCompletedTenders()" class="px-3 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/50 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-trash-can"></i> Очистить завершенные/выполненные
+            </button>
+          </div>
+          <form onsubmit="addAdminTender(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <input type="text" id="tender-title" required placeholder="Название задания / тендера" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="tender-project" required placeholder="Проект / Компания" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <input type="text" id="tender-budget" required placeholder="Бюджет (напр. 150 000 ₸)" class="bg-slate-950 border border-slate-800 text-xs text-white px-3.5 py-2 rounded-xl">
+            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs py-2 rounded-xl transition shadow-lg shadow-amber-600/20">Выложить тендер</button>
+          </form>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Выложенные тендеры</h4>
+            <div id="admin-tenders-list" class="space-y-3"></div>
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-handshake text-amber-400"></i> Заявки от участников (Телефон + Предложение)
+            </h4>
+            <div id="admin-tender-responses-list" class="space-y-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ТАБ 6: ЧАТ -->
+      <section id="acontent-chat" class="acontent space-y-4 hidden">
+        <div class="p-6 rounded-2xl bg-slate-900/80 border border-slate-800/80 space-y-4 max-w-2xl shadow-xl">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-white">💬 Общий чат</h3>
+            <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">Вы: Админ</span>
+          </div>
+          <div id="chat-box-admin" class="h-80 bg-slate-950/80 p-4 rounded-xl border border-slate-800/80 overflow-y-auto space-y-3 text-xs"></div>
+          <div class="flex space-x-2">
+            <input type="text" id="chat-input-admin" placeholder="Ответить участникам..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+            <button onclick="sendChatMessage(true)" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-md shadow-emerald-600/20">Отправить</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ОТКЛИК НА ВАКАНСИЮ -->
+  <div id="job-apply-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeJobApplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="space-y-1">
+        <h3 class="text-sm font-bold text-white">Отклик на вакансию</h3>
+        <p id="job-modal-title" class="text-xs text-emerald-400 font-semibold"></p>
+      </div>
+      <form onsubmit="submitJobResponse(event)" class="space-y-3">
+        <input type="hidden" id="job-apply-id">
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше имя</label>
+          <input type="text" id="job-apply-name" required placeholder="Ернар Валиев" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваш номер телефона</label>
+          <input type="tel" id="job-apply-phone" required placeholder="+7 700 000 00 00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Отправить отклик</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО: ВЗЯТЬ ТЕНДЕР (ЗАДАНИЕ) -->
+  <div id="tender-apply-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeTenderApplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="space-y-1">
+        <h3 class="text-sm font-bold text-white">Принять участие в тендере</h3>
+        <p id="tender-modal-title" class="text-xs text-amber-400 font-semibold"></p>
+      </div>
+      <form onsubmit="submitTenderResponse(event)" class="space-y-3">
+        <input type="hidden" id="tender-apply-id">
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше имя / Компания</label>
+          <input type="text" id="tender-apply-name" required placeholder="Алихан Ибрагимов" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваш номер телефона</label>
+          <input type="tel" id="tender-apply-phone" required placeholder="+7 700 000 00 00" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-[11px] text-slate-400 mb-1">Ваше предложение (Сроки, детали)</label>
+          <textarea id="tender-apply-offer" required placeholder="Готов выполнить за 3 дня..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white" rows="2"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-amber-600/20">Взять тендер</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО ВХОДА В АДМИНКУ -->
+  <div id="login-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="bg-slate-900 border border-slate-800/80 p-6 rounded-2xl w-full max-w-sm space-y-4 shadow-2xl relative">
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-sm">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="text-center space-y-1">
+        <h3 class="text-base font-bold text-white">Панель Админа</h3>
+        <p class="text-xs text-slate-400">Введите пароль доступа</p>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-3">
+        <div>
+          <input type="password" id="admin-pass-input" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white">
+          <p id="login-error" class="text-[11px] text-rose-400 mt-1 hidden">Неверный пароль!</p>
+        </div>
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl text-xs transition shadow-lg shadow-emerald-600/20">Войти</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

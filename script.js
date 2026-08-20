@@ -94,28 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchRealRates();
   
   // Делаем функции глобальными для вызова из HTML
-  window.openLoginModal = openLoginModal;
-  window.closeLoginModal = closeLoginModal;
-  window.handleLogin = handleLogin;
-  window.logoutAdmin = logoutAdmin;
-  window.switchAdminTab = switchAdminTab;
-  window.nextQuote = nextQuote;
-  window.runConversion = runConversion;
-  window.runAllCalculations = runAllCalculations;
-  window.fetchRealRates = fetchRealRates;
-  window.submitFounderApp = submitFounderApp;
-  window.sendChatMessage = sendChatMessage;
-  window.approveApplication = approveApplication;
-  window.rejectApplication = rejectApplication;
-  window.addBusinessJob = addBusinessJob;
-  window.openJobApplyModal = openJobApplyModal;
-  window.closeJobApplyModal = closeJobApplyModal;
-  window.submitJobResponse = submitJobResponse;
-  window.addAdminTender = addAdminTender;
-  window.openTenderApplyModal = openTenderApplyModal;
-  window.closeTenderApplyModal = closeTenderApplyModal;
-  window.submitTenderResponse = submitTenderResponse;
-  window.clearCompletedTenders = clearCompletedTenders;
+window.openLoginModal = openLoginModal;
+window.closeLoginModal = closeLoginModal;
+window.handleLogin = handleLogin;
+window.logoutAdmin = logoutAdmin;
+window.switchAdminTab = switchAdminTab;
+window.nextQuote = nextQuote;
+window.runConversion = runConversion;
+window.runAllCalculations = runAllCalculations;
+window.fetchRealRates = fetchRealRates;
+window.submitFounderApp = submitFounderApp;
+window.sendChatMessage = sendChatMessage;
+window.approveApplication = approveApplication;
+window.rejectApplication = rejectApplication;
 });
 
 // ==========================================
